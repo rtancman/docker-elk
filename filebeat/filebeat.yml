@@ -1,0 +1,32 @@
+filebeat:
+    prospectors:
+        -
+            paths:
+                - /var/log/auth.log
+                - /var/log/syslog
+                # - /var/log/*
+
+            input_type: log
+            document_type: syslog
+        -
+          paths:
+            - "/var/log/nginx/*.log"
+          document_type: nginx-access
+
+    # registry_file: /var/lib/filebeat/registry
+
+output:
+    logstash:
+        enabled: true
+        timeout: 15
+        # hosts: ["$LOGSTASH_DNS:5044"]
+        hosts: ["logstash:5044"]
+
+        # tls:
+            # certificate_authorities: ["/etc/pki/tls/certs/logstash-forwarder.crt"]
+
+shipper:
+
+logging:
+    files:
+        rotateeverybytes: 10485760 # = 10MB

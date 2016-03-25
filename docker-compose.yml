@@ -2,20 +2,37 @@ kibana:
     image: kibana
     ports:
         - "5601:5601"
+    # environment:
+    #     - ELASTICSEARCH_URL=elasticsearch:9200
     links:
         - elasticsearch
+    volumes:
+        - ./kibana/config:/opt/kibana/config
 elasticsearch:
     image: elasticsearch
     volumes:
         - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+        - ./elasticsearch/dashboards:/usr/share/elasticsearch/dashboards
+        - ./elasticsearch/docker-entrypoint.sh:/docker-entrypoint.sh
 logstash:
     image: logstash
+    expose:
+        - "5044"
     links:
         - elasticsearch
     volumes:
         - ./logstash/conf.d:/etc/logstash/conf.d
         - ./logstash/docker-entrypoint.sh:/docker-entrypoint.sh
-
+django:
+    image: testefilebeat
+    ports:
+        - "8000:8000"
+    links:
+        - logstash
+        - elasticsearch
+    volumes:
+        - ./filebeat/filebeat.yml:/etc/filebeat/filebeat.yml
+    
 # https://www.digitalocean.com/community/tutorials/how-to-install-elasticsearch-logstash-and-kibana-elk-stack-on-ubuntu-14-04
 # logstash -f /etc/logstash/conf.d/*
 # $ docker run --name some-kibana --link some-elasticsearch:elasticsearch -p 5601:5601 -d kibana
