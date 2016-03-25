@@ -5,3 +5,6 @@
 - https://docs.docker.com/compose/compose-file/
 - https://elk-docker.readthedocs.org/#running-with-docker-compose
 - http://technologyconversations.com/2015/05/18/centralized-system-and-docker-logging-with-elk-stack/
+- http://nathanleclaire.com/blog/2015/04/27/automating-docker-logging-elasticsearch-logstash-kibana-and-logspout/
+- http://rancher.com/container-logging-with-docker-and-elk-september-2015-recorded-online-meetup/
+- https://github.com/deviantony/docker-elk
